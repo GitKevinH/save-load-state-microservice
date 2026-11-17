@@ -25,3 +25,24 @@ def save_data():
         "status": "saved",
         "filename": filepath.name
     }), 201
+
+
+@app.route('/load', methods=['GET'])
+def load_data():
+    """Loads JSON data from '<username>_<application_name>.txt'
+    Returns a JSON"""
+    payload = request.get_json(silent=True) or {}
+    username = payload.get("username")
+    application_name = payload.get("application_name")
+
+    if not username or not application_name:
+        return jsonify({
+            "error": "Request must include 'username' and 'application_name'"
+        }), 400
+
+    # Gets the filepath of the desired file and reads the data from it
+    filepath = Path(f"{username}_{application_name}.txt")
+    file_data = filepath.read_text(encoding="utf-8").replace("\n", "")
+
+    # Returns a json of the data from the file
+    return jsonify(file_data)
