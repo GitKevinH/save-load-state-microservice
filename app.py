@@ -5,8 +5,8 @@ from flask import Flask, jsonify, request
 app = Flask(__name__)
 
 @app.route('/save', methods=['POST'])
-def save_data(request):
-    """Saves JSON data to '<username>_<application_name>.txt'."""
+def save_data():
+    """Saves JSON data to '[username+application_name].txt'."""
     payload = request.get_json(silent=True) or {}
 
     username = payload.get("username")
